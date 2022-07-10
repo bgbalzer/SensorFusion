@@ -2,7 +2,7 @@ numpy
 opencv-python
 protobuf
 easydict
-torch
+pytorch
 pillow
 matplotlib
 wxpython
