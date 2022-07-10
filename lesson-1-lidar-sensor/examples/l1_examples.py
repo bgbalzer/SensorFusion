@@ -44,8 +44,8 @@ def range_image_to_point_cloud(frame, lidar_name, vis=True):
 
     # extract range values from frame
     ri = load_range_image(frame, lidar_name)
-    ri[ri<0]=0.0
-    ri_range = ri[:,:,0]
+    ri[ri < 0] = 0.0
+    ri_range = ri[:, :, 0]
 
     # load calibration data
     calibration = [obj for obj in frame.context.laser_calibrations if obj.name == lidar_name][0]
@@ -59,13 +59,13 @@ def range_image_to_point_cloud(frame, lidar_name, vis=True):
 
     # compute azimuth angle and correct it so that the range image center is aligned to the x-axis
     width = ri_range.shape[1]
-    extrinsic = np.array(calibration.extrinsic.transform).reshape(4,4)
-    az_correction = math.atan2(extrinsic[1,0], extrinsic[0,0])
-    azimuth = np.linspace(np.pi,-np.pi,width) - az_correction
+    extrinsic = np.array(calibration.extrinsic.transform).reshape(4, 4)
+    az_correction = math.atan2(extrinsic[1, 0], extrinsic[0, 0])
+    azimuth = np.linspace(np.pi, -np.pi, width) - az_correction
 
     # expand inclination and azimuth such that every range image cell has its own appropriate value pair
-    azimuth_tiled = np.broadcast_to(azimuth[np.newaxis,:], (height,width))
-    inclination_tiled = np.broadcast_to(inclinations[:,np.newaxis],(height,width))
+    azimuth_tiled = np.broadcast_to(azimuth[np.newaxis, :], (height, width))
+    inclination_tiled = np.broadcast_to(inclinations[:, np.newaxis],(height, width))
 
     # perform coordinate conversion
     x = np.cos(azimuth_tiled) * np.cos(inclination_tiled) * ri_range
@@ -73,13 +73,13 @@ def range_image_to_point_cloud(frame, lidar_name, vis=True):
     z = np.sin(inclination_tiled) * ri_range
 
     # transform 3d points into vehicle coordinate system
-    xyz_sensor = np.stack([x,y,z,np.ones_like(z)])
+    xyz_sensor = np.stack([x, y, z, np.ones_like(z)])
     xyz_vehicle = np.einsum('ij,jkl->ikl', extrinsic, xyz_sensor)
-    xyz_vehicle = xyz_vehicle.transpose(1,2,0)
+    xyz_vehicle = xyz_vehicle.transpose(1, 2, 0)
 
     # extract points with range > 0
     idx_range = ri_range > 0
-    pcl = xyz_vehicle[idx_range,:3]
+    pcl = xyz_vehicle[idx_range, :3]
  
     # visualize point-cloud
     if vis:
@@ -98,20 +98,20 @@ def vis_range_channel(frame, lidar_name):
 
     # extract range image from frame
     ri = load_range_image(frame, lidar_name)
-    ri[ri<0]=0.0
+    ri[ri < 0] = 0.0
 
     # map value range to 8bit
-    ri_range = ri[:,:,0]
+    ri_range = ri[:, :, 0]
     ri_range = ri_range * 255 / (np.amax(ri_range) - np.amin(ri_range))
     img_range = ri_range.astype(np.uint8)
 
     # focus on +/- 45° around the image center
     deg45 = int(img_range.shape[1] / 8)
     ri_center = int(img_range.shape[1]/2)
-    img_range = img_range[:,ri_center-deg45:ri_center+deg45]
+    img_range = img_range[:, ri_center-deg45:ri_center+deg45]
 
-    print('max. val = ' + str(round(np.amax(img_range[:,:]),2)))
-    print('min. val = ' + str(round(np.amin(img_range[:,:]),2)))
+    print('max. val = ' + str(round(np.amax(img_range[:, :]), 2)))
+    print('min. val = ' + str(round(np.amin(img_range[:, :]), 2)))
 
     cv2.imshow('range_image', img_range)
     cv2.waitKey(0)
@@ -124,8 +124,8 @@ def get_max_min_range(frame, lidar_name):
     ri = load_range_image(frame, lidar_name)
     ri[ri<0]=0.0
 
-    print('max. range = ' + str(round(np.amax(ri[:,:,0]),2)) + 'm')
-    print('min. range = ' + str(round(np.amin(ri[:,:,0]),2)) + 'm')
+    print('max. range = ' + str(round(np.amax(ri[:, :, 0]), 2)) + 'm')
+    print('min. range = ' + str(round(np.amin(ri[:, :, 0]), 2)) + 'm')
 
 
 def print_range_image_shape(frame, lidar_name):
