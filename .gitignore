@@ -109,3 +109,6 @@ experiments/
 
 #TFRecords
 /dataset/
+
+#Notepad++
+*.bak
