@@ -169,7 +169,7 @@ def plot_tracks(fig, ax, ax2, track_list, meas_list, lidar_labels, lidar_labels_
     return fig, ax, ax2
 
 
-def plot_rmse(manager, all_labels):
+def plot_rmse(manager, all_labels, configs_det):
     fig, ax = plt.subplots()
     plot_empty = True
     
@@ -194,11 +194,13 @@ def plot_rmse(manager, all_labels):
             for label, valid in zip(label_list[0], label_list[1]):
                 error = 0
                 if valid: 
-                    error += (label.box.center_x - float(track.x[0]))**2
-                    error += (label.box.center_y - float(track.x[1]))**2
-                    error += (label.box.center_z - float(track.x[2]))**2
-                    if error < min_error:
-                        min_error = error
+                    # check if label lies inside specified range
+                    if label.box.center_x > configs_det.lim_x[0] and label.box.center_x < configs_det.lim_x[1] and label.box.center_y > configs_det.lim_y[0] and label.box.center_y < configs_det.lim_y[1]:
+                        error += (label.box.center_x - float(track.x[0]))**2
+                        error += (label.box.center_y - float(track.x[1]))**2
+                        error += (label.box.center_z - float(track.x[2]))**2
+                        if error < min_error:
+                            min_error = error
             if min_error < np.inf:
                 error = np.sqrt(min_error)
                 time.append(track.t)
@@ -229,7 +231,7 @@ def plot_rmse(manager, all_labels):
         
 def make_movie(path):
     # read track plots
-    images = [img for img in os.listdir(path) if img.endswith(".png")]
+    images = [img for img in sorted(os.listdir(path)) if img.endswith(".png")]
     frame = cv2.imread(os.path.join(path, images[0]))
     height, width, layers = frame.shape
 

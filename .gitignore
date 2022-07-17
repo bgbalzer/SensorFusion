@@ -110,5 +110,6 @@ experiments/
 #TFRecords
 /dataset/
 
-#Notepad++
+#My Notes
 *.bak
+Setup_Notes.txt
