@@ -110,6 +110,28 @@ experiments/
 #TFRecords
 /dataset/
 
+#Pretrained Models
+/tools/objdet_models/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #My Notes
 *.bak
 Setup_Notes.txt
