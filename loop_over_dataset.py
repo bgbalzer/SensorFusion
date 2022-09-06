@@ -184,7 +184,7 @@ while True:
             cv2.waitKey(vis_pause_time)
 
         if 'show_pcl' in exec_list:
-            pcl.show_pcl(lidar_pcl, cnt_frame)
+            pcl.show_pcl(lidar_pcl  )
 
         if 'show_bev' in exec_list:
             tools.show_bev(lidar_bev, configs_det)
