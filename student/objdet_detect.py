@@ -96,6 +96,7 @@ def load_configs_model(model_name='darknet', configs=None):
         configs.down_ratio = 4
         configs.max_objects = 50
         configs.num_input_features = 4
+        configs.min_iou = 0.5
         #######
         ####### ID_S3_EX1-3 END #######
 
@@ -237,11 +238,12 @@ def detect_objects(input_bev_maps, model, configs):
             z = z + configs.lim_z[0]
             w = bev_w / configs.bev_width * (configs.lim_y[1] - configs.lim_y[0])
             l = bev_l / configs.bev_height * (configs.lim_x[1] - configs.lim_x[0])
+            # yaw = -yaw
 
             ## step 4 : append the current object to the 'objects' array
             if ((x >= configs.lim_x[0]) and (x <= configs.lim_x[1]) and (y >= configs.lim_y[0]) and (
                     y <= configs.lim_y[1]) and (z >= configs.lim_z[0]) and (z <= configs.lim_z[1])):
-                objects.append([1, x, y, z, h, w, l, -yaw])
+                objects.append([1, x, y, z, h, w, l, yaw])
 
     #######
     ####### ID_S3_EX2 END #######
