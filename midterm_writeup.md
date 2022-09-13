@@ -17,7 +17,10 @@ blank spaces in the intensity map. Headlights and tail lights also stand out pro
 
 
 ### Pre-trained Detection Model Performance
-I evaluated the peformance using frames 50 to 150 on `training_segment-1005081002024129653_5313_150_5333_150_with_camera_labels.tfrecord`, using the resnet pretrained model to perform detection
+I evaluated the resnet pretrained model peformance using frames 50 to 150 on 
+```
+training_segment-1005081002024129653_5313_150_5333_150_with_camera_labels.tfrecord
+```
 precision = 98.9%, recall = 88.9%
 
 ![.](media/results.png)
