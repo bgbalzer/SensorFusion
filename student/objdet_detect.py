@@ -238,7 +238,7 @@ def detect_objects(input_bev_maps, model, configs):
             z = z + configs.lim_z[0]
             w = bev_w / configs.bev_width * (configs.lim_y[1] - configs.lim_y[0])
             l = bev_l / configs.bev_height * (configs.lim_x[1] - configs.lim_x[0])
-            # yaw = -yaw
+            yaw = -yaw
 
             ## step 4 : append the current object to the 'objects' array
             if ((x >= configs.lim_x[0]) and (x <= configs.lim_x[1]) and (y >= configs.lim_y[0]) and (
