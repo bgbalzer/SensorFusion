@@ -1,14 +1,11 @@
 # Writeup: Track 3D-Objects Over Time
 
-### RMSE Graph
-![.](media/CLF_results.png)
-
 ### 1. Write a short recap of the four tracking steps and what you implemented there (filter, track management, association, camera fusion). Which results did you achieve? Which part of the project was most difficult for you to complete, and why?
 **Filter:** The first step was to implement a Kalman filter to fuse predicted postions and sensor measurements to allow for tracking of an object through time. To begin with, this was only done with lidar measurements, however the implementation 
 is designed to work with other sensor measurements as well (implemented later in the project)
 
 #### Kalman Filter RMSE Graph
-![.](media/CLF_stop1_results.png)
+![.](media/CLF_step1_results.png)
 
 **Track Management:** The second step was to create logic for the intialization, scoring, and deletion of tracks. This is crucial for multi-target tracking and general system performance. It is probably where I spent the most time throughout the project, turning exactly how the scoring was handled in order to properly delete tracks.
 
