@@ -7,12 +7,24 @@
 **Filter:** The first step was to implement a Kalman filter to fuse predicted postions and sensor measurements to allow for tracking of an object through time. To begin with, this was only done with lidar measurements, however the implementation 
 is designed to work with other sensor measurements as well (implemented later in the project)
 
+#### Kalman Filter RMSE Graph
+![.](media/CLF_stop1_results.png)
+
 **Track Management:** The second step was to create logic for the intialization, scoring, and deletion of tracks. This is crucial for multi-target tracking and general system performance. It is probably where I spent the most time throughout the project, turning exactly how the scoring was handled in order to properly delete tracks.
+
+#### Track Management RMSE Graph
+![.](media/CLF_step2_results.png)
 
 **Association:** The third step was implementing an association matrix to be able to associate tracks and their closest measurements. Tracks and measurements with the closest Mahalanobis distance get associated together in the matrix and updated. They are then removed from the association matrix.
 Additionally, tracks and measurements which are too far away to be associated together need to be managed as well. Unassociated tracks will have their score decreased and eventually deleted if they remain unassociated.
 
+#### Association RMSE Graph
+![.](media/CLF_step3_results.png)
+
 **Camera Fusion:** The fourth and final step was to integrate measurements from the vehicles camera as well. To do this appropriately, two things needed to be taken into consideration: the camera's field of view and the transformation from the camera sensor coordinates on a 2D plane into the 3D space of the self driving vehicle.
+
+#### Camera Fusion RMSE Graph
+![.](media/CLF_final_results.png)
 
 ### 2. Do you see any benefits in camera-lidar fusion compared to lidar-only tracking (in theory and in your concrete results)? 
 Yes, definitely. When testing with only lidar measurements, false positives would occur often around the vegetation to the right of the road. The false positive tracks would persist for quite a while. Once the camera sensor data was fused with the lidar tracking, however, the false tracks were quickly identified and deleted.
